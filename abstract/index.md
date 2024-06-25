@@ -4,12 +4,15 @@ author: Oliver Emil Bøving
 bibliography: lit.bib
 ---
 
-The slides are located online here:
+The slides and souce-code are located online here:
 
 \begin{center}
-\large
-\url{https://oembo-sse.github.io/02913-Advanced-Analysis-Techniques-Jun-24/}
+\url{https://oembo-sse.github.io/02913-Advanced-Analysis-Techniques-Jun-24/} \\
+\url{https://github.com/oembo-sse/02913-Advanced-Analysis-Techniques-Jun-24/} \\
 \end{center}
+
+\
+\
 
 - The language and theory is based on a combination of @DBLP:phd/dnb/Kaminski19 and the unpublished PhD thesis of Kevin Batz.
 - The stucture of the proof takes great inspiration from an unreleased paper by Kevin Batz, Benjamin Lucien Kaminski, Christoph Matheja, Tobias Winkler.
