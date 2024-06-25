@@ -6,6 +6,7 @@ import wasmPack from "./wasm-pack-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/02913-Advanced-Analysis-Techniques-Jun-24/",
   plugins: [
     topLevelAwait(),
     react(),

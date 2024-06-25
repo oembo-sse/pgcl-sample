@@ -1,12 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { makeSlide } from "../hooks";
-import initPGCL, * as pgcl from "pgcl";
+import * as pgcl from "pgcl";
 import { RenderTree, useInterval } from "../Tree";
 import { useMemo, useState } from "react";
 import { tex } from "../Katex";
 import { CodeEditor } from "../CodeEditor";
-
-await initPGCL();
 
 export const s00 = (initialProgram: string) =>
   makeSlide(1, () => {
