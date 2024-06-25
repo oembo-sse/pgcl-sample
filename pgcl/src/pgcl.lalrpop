@@ -1,0 +1,81 @@
+use std::str::FromStr;
+use crate::ast::*;
+
+grammar;
+
+extern {
+    type Error = crate::parse::CustomError;
+}
+
+match {
+    // Skip whitespace and comments
+    r"\s*" => { },
+    r"//[^\n\r]*[\n\r]*" => { }, // `// comment`
+    r"/\*([^\*]*\*+[^\*/])*([^\*]*\*+|[^\*])*\*/" => { }, // `/* comment */`
+    _
+}
+
+pub File: File = <cmd:Cmd> => File { <> };
+
+Cmd_ = Cmd;
+pub Cmd: Cmd = {
+    #[precedence(level = "0")]
+    <l:@L> "skip" <r:@R> => Cmd::parsed(l, r, CmdKind::Skip),
+    <l:@L> "observe" <b:BExpr> <r:@R> => Cmd::parsed(l, r, CmdKind::Observe(b)),
+    <l:@L> <var:Var> ":=" <e:Expr> <r:@R> => Cmd::parsed(l, r, CmdKind::Assign(var, e)),
+    #[precedence(level = "1")] #[assoc(side = "right")]
+    <l:@L> "{" <c1:Cmd_> "}" "[]" "{" <c2:Cmd_> "}" <r:@R> => Cmd::parsed(l, r, CmdKind::Nondet(c1, c2)),
+    <l:@L> "{" <c1:Cmd_> "}" "[" <p:Expr> "]" "{" <c2:Cmd_> "}" <r:@R> => Cmd::parsed(l, r, CmdKind::Prob(c1, p, c2)),
+    <l:@L> "if" <b:BExpr> "{" <c1:Cmd_> "}" "else" "{" <c2:Cmd_> "}" <r:@R> => Cmd::parsed(l, r, CmdKind::Ite(b, c1, c2)),
+    <l:@L> "while" <b:BExpr> "{" <c:Cmd_> "}" <r:@R> => Cmd::parsed(l, r, CmdKind::Loop(b, c)),
+    #[precedence(level = "2")] #[assoc(side = "right")]
+    <l:@L> <c1:Cmd> ";" <c2:Cmd> <r:@R> => Cmd::parsed(l, r, CmdKind::Seq(c1, c2)),
+};
+
+Var: Var = <l:@L> <text:Ident> <r:@R> => Var::parsed(l, r, text);
+
+Ident: String = r"[_a-zA-Z][_a-zA-Z0-9]*" => <>.to_string();
+
+Int: i64 = <from:@L> <int:r"[0-9]+"> <to:@R> =>? i64::from_str(int).map_err(|_| lalrpop_util::ParseError::User {
+    error: crate::parse::CustomError::IntegerTooLarge { from, to },
+});
+
+Expr_ = Expr;
+pub Expr: Expr = {
+    #[precedence(level = "0")]
+    <l:@L> <v:Var> <r:@R> => Expr::parsed(l, r, ExprKind::Var(v)),
+    <l:@L> <v:Int> <r:@R> => Expr::parsed(l, r, ExprKind::Num(v)),
+    <l:@L> "(" <mut e:Expr_> ")" <r:@R> => {
+        e.has_paren = true;
+        e
+    },
+    #[precedence(level = "1")] #[assoc(side = "right")]
+    <l:@L> <e1:Expr> "^" <e2:Expr> <r:@R> => Expr::parsed(l, r, ExprKind::Op(e1, ExprOp::Pow, e2)),
+    #[precedence(level = "2")] #[assoc(side = "right")]
+    <l:@L> <e1:Expr> "*" <e2:Expr> <r:@R> => Expr::parsed(l, r, ExprKind::Op(e1, ExprOp::Mul, e2)),
+    <l:@L> <e1:Expr> "/" <e2:Expr> <r:@R> => Expr::parsed(l, r, ExprKind::Op(e1, ExprOp::Div, e2)),
+    #[precedence(level = "3")] #[assoc(side = "left")]
+    <l:@L> <e1:Expr> "+" <e2:Expr> <r:@R> => Expr::parsed(l, r, ExprKind::Op(e1, ExprOp::Add, e2)),
+    <l:@L> <e1:Expr> "-" <e2:Expr> <r:@R> => Expr::parsed(l, r, ExprKind::Op(e1, ExprOp::Sub, e2)),
+};
+
+BExpr_ = BExpr;
+pub BExpr: BExpr = {
+    #[precedence(level = "0")]
+    <l:@L> "true" <r:@R> => BExpr::parsed(l, r, BExprKind::Bool(true)),
+    <l:@L> "false" <r:@R> => BExpr::parsed(l, r, BExprKind::Bool(false)),
+    <l:@L> "(" <mut e:BExpr_> ")" <r:@R> => {
+        e.has_paren = true;
+        e
+    },
+    #[precedence(level = "1")] #[assoc(side = "left")]
+    <l:@L> <e1:Expr> "<" <e2:Expr> <r:@R> => BExpr::parsed(l, r, BExprKind::Rel(e1, RelOp::Lt, e2)),
+    <l:@L> <e1:Expr> "<=" <e2:Expr> <r:@R> => BExpr::parsed(l, r, BExprKind::Rel(e1, RelOp::Le, e2)),
+    <l:@L> <e1:Expr> "=" <e2:Expr> <r:@R> => BExpr::parsed(l, r, BExprKind::Rel(e1, RelOp::Eq, e2)),
+    <l:@L> <e1:Expr> "!=" <e2:Expr> <r:@R> => BExpr::parsed(l, r, BExprKind::Rel(e1, RelOp::Ne, e2)),
+    <l:@L> <e1:Expr> ">=" <e2:Expr> <r:@R> => BExpr::parsed(l, r, BExprKind::Rel(e1, RelOp::Ge, e2)),
+    <l:@L> <e1:Expr> ">" <e2:Expr> <r:@R> => BExpr::parsed(l, r, BExprKind::Rel(e1, RelOp::Gt, e2)),
+    #[precedence(level = "2")] #[assoc(side = "left")]
+    <l:@L> <b1:BExpr> "&&" <b2:BExpr> <r:@R> => BExpr::parsed(l, r, BExprKind::Logic(b1, LogicOp::And, b2)),
+    <l:@L> <b1:BExpr> "||" <b2:BExpr> <r:@R> => BExpr::parsed(l, r, BExprKind::Logic(b1, LogicOp::Or, b2)),
+}

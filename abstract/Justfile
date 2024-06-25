@@ -1,0 +1,14 @@
+plan:
+    just pdf index.md index.pdf
+
+plan-watch:
+    just pdf-watch index.md index.pdf
+
+nix:
+    nix-shell -p pandoc -p watchexec -p tectonic -p bibtool
+
+pdf input output:
+    pandoc --pdf-engine tectonic {{input}} -o {{output}} --citeproc --bibliography lit.bib
+
+pdf-watch input output:
+    watchexec --clear -e md -- just pdf {{input}} {{output}}
