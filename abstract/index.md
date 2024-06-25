@@ -8,7 +8,7 @@ The slides are located online here:
 
 \begin{center}
 \large
-\url{https://oembo-2024-june-sse-seminar.netlify.app/}
+\url{https://oembo-sse.github.io/02913-Advanced-Analysis-Techniques-Jun-24/}
 \end{center}
 
 - The language and theory is based on a combination of @DBLP:phd/dnb/Kaminski19 and the unpublished PhD thesis of Kevin Batz.
