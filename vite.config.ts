@@ -6,7 +6,7 @@ import wasmPack from "./wasm-pack-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/CoPLaWS-2024/",
+  base: "/pgcl-sample/",
   plugins: [
     topLevelAwait(),
     react(),
