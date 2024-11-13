@@ -6,7 +6,10 @@ import { useMemo, useState } from "react";
 import { tex } from "../Katex";
 import { CodeEditor } from "../CodeEditor";
 
-export const s00 = (initialProgram: string) =>
+export const s00 = (
+  initialProgram: string,
+  initialExprs: [string, string] = ["sent", "tick"]
+) =>
   makeSlide(1, () => {
     const [src, setSrc] = useState(
       // "x := 2 ; while x > 0 { { x := x - 1 } [1/2] { skip } }"
@@ -61,8 +64,8 @@ export const s00 = (initialProgram: string) =>
             <CodeEditor src={src} setSrc={setSrc}></CodeEditor>
           </div>
           <div className="grid gap-1 grid-cols-2 w-full">
-            <Samples initalExpr="sent" exe={exe} tree={smallTree} />
-            <Samples initalExpr="tick" exe={exe} tree={smallTree} />
+            <Samples initalExpr={initialExprs[0]} exe={exe} tree={smallTree} />
+            <Samples initalExpr={initialExprs[1]} exe={exe} tree={smallTree} />
           </div>
         </div>
         {smallTree && (
@@ -154,6 +157,8 @@ const Histogram = ({
     numBins = max - min + 1;
     binWidth = 1;
   }
+
+  numBins = Math.floor(numBins);
 
   const bins = Array(numBins + (just ? 0 : 1)).fill(0);
 

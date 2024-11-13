@@ -16,7 +16,7 @@ export const Callout = ({
   title: React.ReactNode;
   children: React.ReactNode | React.ReactNode[];
 }) => (
-  <div className=" bg-bg-50 border px-3 py-1 rounded-xl shadow-xl pb-4">
+  <div className=" bg-bg-50 border px-3 py-1 rounded-xl shadow-xl pb-4 relative">
     <div className="text-2xl text-fg-700 font-bold">{title}</div>
     <hr className="mb-4" />
     {children}

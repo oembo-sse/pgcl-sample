@@ -5,6 +5,7 @@ import { appear, useSlide } from "../slides";
 import { Callout, H } from "../common";
 import React from "react";
 import { weakestPre } from "../semantics";
+import { LeanLogo } from "../assets/lean_logo";
 
 const steps = [
   (delta: number) =>
@@ -77,10 +78,27 @@ const steps = [
               is equal to the <H>weakest pre-expectations</H>.
             </motion.div>
           </div>
+          {delta == 1 && (
+            <motion.div
+              layout
+              initial={{
+                scale: 0,
+                position: "absolute",
+                top: "-2em",
+                right: "-6em",
+                rotate: -50,
+              }}
+              animate={{ scale: 1, position: "absolute", rotate: 20 }}
+              className="bg-bg-50/50 rounded-xl border"
+            >
+              <LeanLogo className="w-96 blur-[5px] animate-pulse" />
+            </motion.div>
+          )}
         </Callout>
       </motion.div>
     ),
   }),
+  null,
 ];
 
 export const s10 = makeSlide(steps.length + 1, () => {

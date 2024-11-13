@@ -8,18 +8,20 @@ export type AppearProps = {
   scale?: boolean;
   exit?: boolean;
   className?: string;
-  children: React.ReactNode | React.ReactNode[];
+  src?: string;
+  children?: React.ReactNode | React.ReactNode[];
 };
 
 const deriveProps = (props: AppearProps) => {
-  const { scale, exit, children, className } = props;
+  const { scale, exit, children, className, src } = props;
   return {
     initial: { opacity: 0, y: -10 },
     animate: { opacity: 1, y: 0 },
     exit: exit ? { opacity: 0, y: 10 } : undefined,
     layout: scale ? true : "position",
-    children: children,
-    className: className,
+    children,
+    className,
+    src,
   } as const;
 };
 
@@ -32,6 +34,8 @@ const show = (props: AppearProps) => {
 export const appear = {
   div: (props: AppearProps) =>
     show(props) && <motion.div {...deriveProps(props)} />,
+  img: (props: AppearProps) =>
+    show(props) && <motion.img {...deriveProps(props)} />,
   li: (props: AppearProps) =>
     show(props) && <motion.li {...deriveProps(props)} />,
   span: (props: AppearProps) =>

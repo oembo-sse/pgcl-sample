@@ -146,7 +146,7 @@ function hasMarkedParent<T>(t: TreeNode<T>[], id: number): boolean {
 // }
 
 const WIDTH = 10;
-const HEIGHT = 10 / 4;
+const HEIGHT = 10 / 10;
 const WIDTH_GAP = WIDTH + 5;
 const HEIGHT_GAP = HEIGHT + 3;
 

@@ -19,11 +19,12 @@ export const operationalSemantics = [
   tex`\\dfrac{}{\\operation{\\state{\\assign{x}{A}}{\\sigma}}{N,1}{\\state{\\sink}{\\sigma[x \\mapsto A(\\sigma)]}}}`,
   [
     tex`\\dfrac{\\operation{\\state{C_1}{\\sigma}}{\\alpha,p}{\\state{\\sink}{\\sigma'}}}{\\operation{\\state{\\seq{C_1}{C_2}}{\\sigma}}{\\alpha,p}{\\state{C_2}{\\sigma'}}}`,
-    tex`\\dfrac{\\operation{\\state{C_1'}{\\sigma}}{\\alpha,p}{\\state{\\sink}{\\sigma'}}}{\\operation{\\state{\\seq{C_1}{C_2}}{\\sigma}}{\\alpha,p}{\\state{\\seq{C_1'}{C_2}}{\\sigma'}}}`,
+    tex`\\dfrac{\\operation{\\state{C_1}{\\sigma}}{\\alpha,p}{\\state{C_1'}{\\sigma'}}}{\\operation{\\state{\\seq{C_1}{C_2}}{\\sigma}}{\\alpha,p}{\\state{\\seq{C_1'}{C_2}}{\\sigma'}}}`,
+    // tex`\\dfrac{\\operation{\\state{C_1'}{\\sigma}}{\\alpha,p}{\\state{\\sink}{\\sigma'}}}{\\operation{\\state{\\seq{C_1}{C_2}}{\\sigma}}{\\alpha,p}{\\state{\\seq{C_1'}{C_2}}{\\sigma'}}}`,
   ],
   [
-    tex`\\dfrac{}{\\operation{\\state{\\prob{C_1}{p}{C_2}}{\\sigma}}{N,p(\\sigma)}{\\state{C_1}{\\sigma}}}`,
-    tex`\\dfrac{}{\\operation{\\state{\\prob{C_1}{p}{C_2}}{\\sigma}}{N,1-p(\\sigma)}{\\state{C_2}{\\sigma}}}`,
+    tex`\\dfrac{C_1 \\ne C_2}{\\operation{\\state{\\prob{C_1}{p}{C_2}}{\\sigma}}{N,p(\\sigma)}{\\state{C_1}{\\sigma}}}`,
+    tex`\\dfrac{C_1 \\ne C_2}{\\operation{\\state{\\prob{C_1}{p}{C_2}}{\\sigma}}{N,1-p(\\sigma)}{\\state{C_2}{\\sigma}}}`,
     tex`\\dfrac{}{\\operation{\\state{\\prob{C}{p}{C}}{\\sigma}}{N,1}{\\state{C}{\\sigma}}}`,
   ],
   [

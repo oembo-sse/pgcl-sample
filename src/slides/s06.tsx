@@ -12,12 +12,12 @@ const steps = [
     <div className="text-3xl">
       <div className="text-3xl">
         The function{" "}
-        {tex`\\ER : \\Scheduler \\to \\Rew \\to \\State \\to \\ENNReal`}{" "}
+        {tex`\\ER : \\Nat \\to \\Scheduler \\to \\Rew \\to \\State \\to \\ENNReal`}{" "}
         computes <br /> <i>expected reward</i> of the <H>MDP</H> starting in{" "}
         {tex`s`}.
       </div>
     </div>
-    <div className="text-3xl">{tex`\\ER(\\Sche, r, s) = \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi)`}</div>
+    <div className="text-3xl">{tex`\\ER^{=n}(\\Sche, r, s) = \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi)`}</div>
   </div>,
   <div className="flex justify-center flex-col items-center gap-4">
     <div className="text-3xl">
@@ -27,18 +27,18 @@ const steps = [
         schedulers.
       </div>
     </div>
-    <div className="text-3xl">{tex`\\MinER(r, s) = \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\ER(\\Sche, r, s)`}</div>
+    <div className="text-3xl">{tex`\\MinER(r, s) = \\displaystyle \\sup_{n} \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\ER^{=n}(\\Sche, r, s)`}</div>
   </div>,
-  <div className="flex justify-center flex-col items-center gap-4">
-    <div className="text-3xl">
-      <div className="text-3xl">
-        Similarly, {tex`\\MaxER : \\Rew \\to \\State \\to \\ENNReal`} computes
-        the maximum <br /> expected reward by taking the <i>supremum</i> over
-        schedulers.
-      </div>
-    </div>
-    <div className="text-3xl">{tex`\\MaxER(r, s) = \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\ER(\\Sche, r, s)`}</div>
-  </div>,
+  // <div className="flex justify-center flex-col items-center gap-4">
+  //   <div className="text-3xl">
+  //     <div className="text-3xl">
+  //       Similarly, {tex`\\MaxER : \\Rew \\to \\State \\to \\ENNReal`} computes
+  //       the maximum <br /> expected reward by taking the <i>supremum</i> over
+  //       schedulers.
+  //     </div>
+  //   </div>
+  //   <div className="text-3xl">{tex`\\MaxER(r, s) = \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\ER(\\Sche, r, s)`}</div>
+  // </div>,
   null,
 ];
 

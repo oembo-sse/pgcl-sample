@@ -29,37 +29,36 @@ const steps = [
   <div className="flex justify-center flex-col items-center gap-4">
     <div className="text-3xl">
       <div className="text-3xl">
-        The function {tex`\\succs : \\State \\to \\Act  \\to \\Set{\\State}`}{" "}
+        The function {tex`\\succs : \\Act \\to \\State \\to \\Set{\\State}`}{" "}
         produces the set of <br /> immediate successors of a given state.
       </div>
     </div>
     <div className="text-3xl">{tex`
-      \\succs_\\alpha(s) = \\supp \\P(s, \\alpha) \\;\\;\\;\\;\\;\\;\\;\\;
-      \\succs(s) = \\displaystyle \\bigcup_{\\alpha \\:\\in\\: \\act(s)} \\succs_\\alpha(s)
+      \\succs_\\alpha(s) = \\supp \\P(s, \\alpha)
       `}</div>
   </div>,
   null,
   <div className="flex justify-center flex-col items-center gap-4">
     <div className="text-3xl">
       <div className="text-3xl">
-        The function {tex`\\Paths_\\le : \\State \\to \\Nat \\to \\Set \\Path`}{" "}
-        produces all paths <br /> of length at most {tex`n`} from a given state.
+        The function {tex`\\Paths^= : \\Nat \\to \\State \\to \\Set \\Path`}{" "}
+        produces all paths <br /> of length {tex`n`} from a given state.
       </div>
     </div>
-    <div className="text-3xl">{tex`\\Paths_{\\le n}(s) = \\begin{cases}
+    <div className="text-3xl">{tex`\\Paths^{= n}(s) = \\begin{cases}
         s & \\text{if } n = 0 \\\\
-        \\Paths_{\\le n - 1}(s) \\cup \\{ \\pi s' \\mid \\pi \\in \\Paths_{\\le n}(s) \\land s' \\in \\succs(s) \\} & \\text{otherwise} \\\\
+        \\{ \\pi s' \\mid \\pi \\in \\Paths^{= n}(s) \\land s' \\in \\succs(s) \\} & \\text{otherwise} \\\\
     \\end{cases}`}</div>
   </div>,
-  <div className="flex justify-center flex-col items-center gap-4">
-    <div className="text-3xl">
-      <div className="text-3xl">
-        The function {tex`\\Paths : \\State \\to \\Set \\Path`} produces all
-        paths from a given state.
-      </div>
-    </div>
-    <div className="text-3xl">{tex`\\Paths(s) = \\displaystyle \\bigcup_n \\Paths_{\\le n}(s)`}</div>
-  </div>,
+  // <div className="flex justify-center flex-col items-center gap-4">
+  //   <div className="text-3xl">
+  //     <div className="text-3xl">
+  //       The function {tex`\\Paths : \\State \\to \\Set \\Path`} produces all
+  //       paths from a given state.
+  //     </div>
+  //   </div>
+  //   <div className="text-3xl">{tex`\\Paths(s) = \\displaystyle \\bigcup_n \\Paths_{\\le n}(s)`}</div>
+  // </div>,
   null,
 ];
 

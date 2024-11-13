@@ -13,7 +13,7 @@ const steps = [
         we have to compute this expression:
       </div>
     </div>
-    <div className="text-3xl">{tex`\\MinER(r, s) = r(s) + \\displaystyle \\sup_n \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\H{\\Phi_r^n(\\bot)}(s')`}</div>
+    <div className="text-3xl">{tex`\\MinER(r, s) = r(s) + \\displaystyle \\sup_n \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\H{\\Phi_r^n(\\bot)}(s')`}</div>
   </div>,
   <div className="text-5xl">
     This is <i className="font-bold">very hard!</i>

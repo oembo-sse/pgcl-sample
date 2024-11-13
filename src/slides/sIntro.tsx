@@ -4,6 +4,8 @@ import { makeSlide } from "../hooks";
 import { appear, useSlide } from "../slides";
 import { H } from "../common";
 
+import DTU from "../assets/DTU2.png";
+
 export const sIntro = makeSlide(3, () => {
   const { step } = useSlide();
 
@@ -27,9 +29,10 @@ export const sIntro = makeSlide(3, () => {
       <appear.div to={1} exit className="text-5xl mt-32">
         Oliver Emil Bøving
       </appear.div>
-      <appear.div to={1} exit className="text-3xl mt-10">
-        As part of DFF project AuRoRA
+      <appear.div to={1} exit className="text-3xl mt-10 text-center">
+        As part of DFF project AuRoRA <br /> with Christoph Matheja
       </appear.div>
+      <appear.img to={1} src={DTU} className="w-12 mt-10" />
     </div>
   );
 });

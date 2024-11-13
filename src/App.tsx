@@ -21,18 +21,27 @@ import { s85 } from "./slides/s85";
 const SLIDES = buildSlides([
   sIntro,
   s04,
-  s00(`tick := 0 ;
-fail := 0 ; sent := 0 ;
-while sent < 4 && fail < 2 {
-  tick := tick + 1 ;
-  { fail := 0 ; sent := sent + 1 } [1/2]
-  { fail := fail + 1 }
-}`),
+  s00(
+    `x := 5 ;
+sum := 0 ;
+while x > 0 {
+  { x := x - 1 } [1/2] { x := x - 2 } ;
+  sum := sum + x
+}`,
+    ["x", "sum"]
+  ),
+  s00(
+    `x := 1 ; stop := 0 ;
+while stop = 0 {
+{ stop := 1 } [1/2] { x := x * 2 }
+}`,
+    ["x", "stop"]
+  ),
   s01,
   s02,
   s03,
   s05,
-  s00(`x := 5 ; y := x + 2`),
+  // s00(`x := 5 ; y := x + 2`, ["x", "y"]),
   s055,
   s06,
   s00(`tick := 0 ;

@@ -7,11 +7,11 @@ import React from "react";
 
 const steps = [
   <div className="text-3xl">
-    A memory {tex`\\Mem : \\mathcal{V} \\to \\ENNReal`} is a mapping from
+    A memory {tex`\\Mem : \\mathcal{V} \\to \\NNReal`} is a mapping from
     variables to values.
   </div>,
   <div className="text-3xl">
-    An expression {tex`\\Expr : \\Mem \\to \\ENNReal`} can be evaluated in a
+    An expression {tex`\\Expr : \\Mem \\to \\NNReal`} can be evaluated in a
     given memory.
   </div>,
   <div className="flex justify-center flex-col items-center gap-4">

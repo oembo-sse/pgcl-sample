@@ -41,18 +41,18 @@ const steps = [
         </div>
       </Callout>
     ) : null,
-  <div className="text-3xl w-[15em]">
-    <div className="text-xl font-bold -ml-10">Property 1.</div>
-    {tex`\\forall s, \\alpha. \\displaystyle\\sum_{(\\alpha,\\ s',\\ p) \\:\\in\\: \\op(s)} p \\in \\{0, 1\\}`}
-  </div>,
-  <div className="text-3xl w-[15em]">
-    <div className="text-xl font-bold -ml-10">Property 2.</div>
-    {tex`\\forall s. \\; \\op(s) \\ne \\empty`}
-  </div>,
-  null,
+  // <div className="text-3xl w-[15em]">
+  //   <div className="text-xl font-bold -ml-10">Property 1.</div>
+  //   {tex`\\forall s, \\alpha. \\displaystyle\\sum_{(\\alpha,\\ s',\\ p) \\:\\in\\: \\op(s)} p \\in \\{0, 1\\}`}
+  // </div>,
+  // <div className="text-3xl w-[15em]">
+  //   <div className="text-xl font-bold -ml-10">Property 2.</div>
+  //   {tex`\\forall s. \\; \\op(s) \\ne \\empty`}
+  // </div>,
+  // null,
   <div className="flex justify-center flex-col items-center gap-4">
     <div className="text-3xl">Then we can define {tex`\\P`} as:</div>
-    <div className="text-3xl">{tex`\\P(s, \\alpha)(s') = \\sum_{(s',\\: p) \\:\\in\\: \\op(s,\\: \\alpha)} p`}</div>
+    <div className="text-3xl">{tex`\\P(s, \\alpha)(s') = \\displaystyle \\sum_{(\\alpha,\\: s',\\: p) \\:\\in\\: \\op(s)} p`}</div>
   </div>,
   // <div className="text-3xl">{tex`\\act : \\State \\to \\Set{\\Act}`}</div>,
   // <div className="text-3xl">{tex`\\succs : \\State \\to \\Act  \\to \\Set{\\State}`}</div>,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const makeSlide = (
   steps: number,
@@ -87,15 +87,19 @@ export const useSlidesBase = (slides: Slides) => {
 
   const [index, setIndex] = useLocalStorage("slide-index", 0);
 
+  const lastScrollTime = useRef(0);
+
   useEffect(() => {
     const clampIndex = (i: number) => clamp(0, i, slides.totalSteps - 1);
 
-    const listener = (e: KeyboardEvent) => {
+    const keyListener = (e: KeyboardEvent) => {
       switch (e.key) {
+        case "PageUp":
         case "ArrowLeft": {
           setIndex((i) => clampIndex(i - 1));
           break;
         }
+        case "PageDown":
         case "ArrowRight": {
           setIndex((i) => clampIndex(i + 1));
           break;
@@ -105,7 +109,6 @@ export const useSlidesBase = (slides: Slides) => {
           else setIndex((i) => clampIndex(i + 1));
           break;
         }
-        case "PageUp":
         case "ArrowUp": {
           const { prevSlide, currentSlide, step } =
             slides.getCurrentSlide(index);
@@ -116,7 +119,6 @@ export const useSlidesBase = (slides: Slides) => {
           }
           break;
         }
-        case "PageDown":
         case "ArrowDown": {
           const { currentSlide } = slides.getCurrentSlide(index);
           setIndex(clampIndex(currentSlide.to));
@@ -124,9 +126,32 @@ export const useSlidesBase = (slides: Slides) => {
         }
       }
     };
-    window.addEventListener("keydown", listener);
+    const ENABLE_SCROLL = false;
+    const wheelListener = (e: WheelEvent) => {
+      if (!ENABLE_SCROLL) return;
+
+      // scroll events are often fired multiple times so we need to debounce
+
+      if (Math.abs(e.deltaY) < 2) {
+        return;
+      }
+
+      const now = Date.now();
+      if (now - lastScrollTime.current < 20) {
+        return;
+      }
+      lastScrollTime.current = now;
+
+      if (e.deltaY > 0) {
+        setIndex((i) => clampIndex(i + 1));
+      } else {
+        setIndex((i) => clampIndex(i - 1));
+      }
+    };
+    window.addEventListener("keydown", keyListener);
+    window.addEventListener("wheel", wheelListener);
     return () => {
-      window.removeEventListener("keydown", listener);
+      window.removeEventListener("keydown", keyListener);
     };
   }, [slides, index, setIndex]);
 

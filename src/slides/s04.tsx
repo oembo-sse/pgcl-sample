@@ -48,18 +48,18 @@ while stop = 0 {
 while stop = 0 {
   @l2 { stop := 1 } [1/2] { @xp x := x * 2$ }$
 }`,
-  `@p2
-@init fail := 0 ; sent := 0 ;$
-while sent < 4 && fail < 2 {
-  { fail := 0 ; sent := sent + 1 } [1/2]
-  { fail := fail + 1 }
-}$`,
-  `@p2 @init fail := 0 ; sent := 0 ;$
-while sent < 4 && fail < 2 {
-  @t tick 1 ;$
-  { fail := 0 ; sent := sent + 1 } [1/2]
-  { fail := fail + 1 }
-}$`,
+  //   `@p2
+  // @init fail := 0 ; sent := 0 ;$
+  // while sent < 4 && fail < 2 {
+  //   { fail := 0 ; sent := sent + 1 } [1/2]
+  //   { fail := fail + 1 }
+  // }$`,
+  //   `@p2 @init fail := 0 ; sent := 0 ;$
+  // while sent < 4 && fail < 2 {
+  //   @t tick 1 ;$
+  //   { fail := 0 ; sent := sent + 1 } [1/2]
+  //   { fail := fail + 1 }
+  // }$`,
 ];
 
 export const s04 = makeSlide(programs.length, () => {

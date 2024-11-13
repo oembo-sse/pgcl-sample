@@ -23,22 +23,22 @@ const steps = [
     ),
   <div className="flex justify-center flex-col items-center gap-4">
     <div className="text-3xl">
-      A {tex`\\Scheduler : (s : \\State) \\to \\act(s)`} is a dependent function
-      that <br /> selects an action for each state.
+      A {tex`\\Scheduler : (\\pi : \\Path) \\to \\act(\\last(\\pi) )`} is a
+      dependent function that <br /> selects an action for each path.
     </div>
   </div>,
-  (delta: number) =>
-    delta > 2 ? null : (
-      <Callout title="Scheduled paths:">
-        <div className="flex justify-center flex-col items-center gap-4">
-          <div className="text-3xl">
-            <div className="text-3xl">{text`A \\textit{scheduled $\\Path$} is a sequence of states $s_0s_1\\dots s_n$ with a scheduler $\\Sche$ such that,`}</div>
-          </div>
-          <div className="text-3xl">{tex`\\forall i \\in 0\\dots n - 1. \\: 0 < \\P(s_i, \\Sche(s_i))(s_{i+1})`}</div>
-        </div>
-      </Callout>
-    ),
-  null,
+  // (delta: number) =>
+  //   delta > 2 ? null : (
+  //     <Callout title="Scheduled paths:">
+  //       <div className="flex justify-center flex-col items-center gap-4">
+  //         <div className="text-3xl">
+  //           <div className="text-3xl">{text`A \\textit{scheduled $\\Path$} is a sequence of states $s_0s_1\\dots s_n$ with a scheduler $\\Sche$ such that,`}</div>
+  //         </div>
+  //         <div className="text-3xl">{tex`\\forall i \\in 0\\dots n - 1. \\: 0 < \\P(s_i, \\Sche(s_i))(s_{i+1})`}</div>
+  //       </div>
+  //     </Callout>
+  //   ),
+  // null,
   <div className="flex justify-center flex-col items-center gap-4">
     <div className="text-3xl">
       <div className="text-3xl">

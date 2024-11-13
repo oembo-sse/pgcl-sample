@@ -4,8 +4,9 @@ import { makeSlide } from "../hooks";
 import { operationalSemantics } from "../semantics";
 import { Code } from "../CodeEditor";
 import { appear, useSlide } from "../slides";
-import { H } from "../common";
+import { Callout, H } from "../common";
 import React from "react";
+import { LeanLogo } from "../assets/lean_logo";
 
 const steps = [
   (delta: number) =>
@@ -34,7 +35,7 @@ const steps = [
         schedulers.
       </div>
     </div> */}
-        <div className="text-4xl">{tex`\\MinER(\\orew(X), \\state{C}{\\sigma}) = \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths(\\state{C}{\\sigma})} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(\\orew(X), \\pi)`}</div>
+        <div className="text-4xl">{tex`\\MinER(\\orew(X), \\state{C}{\\sigma}) = \\displaystyle \\sup_n \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(\\state{C}{\\sigma})} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(\\orew(X), \\pi)`}</div>
       </div>
     ),
   (delta: number) =>
@@ -49,7 +50,7 @@ const steps = [
         computes <br /> the minimum expected reward for a one step.*
       </div>
     </div>
-    <div className="text-4xl">{tex`\\Phi_r(v) = \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot v(s')`}</div>
+    <div className="text-4xl">{tex`\\Phi_r(v) = \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot v(s')`}</div>
   </div>,
   null,
   (delta: number) =>
@@ -59,7 +60,7 @@ const steps = [
           layout="position"
           layoutId="bell-eq"
           className="text-4xl"
-        >{tex`\\text{lfp}\\:\\Phi_r = \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\dots))))`}</motion.div>
+        >{tex`\\text{lfp}\\:\\Phi_r = \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot))))`}</motion.div>
       ),
     },
   null,
@@ -72,8 +73,8 @@ const steps = [
           layoutId="bell-eq"
           className="text-4xl"
         >{tex`\\begin{aligned}
-      \\text{lfp}\\:\\Phi_r &= \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\dots)))) \\\\
-          &= \\displaystyle \\sup_n \\Phi_r^n(\\bot)
+      \\text{lfp}\\:\\Phi_r &= \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot)))) \\\\
+          &= \\displaystyle \\sup_n \\Phi_r^{n+1}(\\bot)
       \\end{aligned}`}</motion.div>
       ),
     },
@@ -86,12 +87,45 @@ const steps = [
           layoutId="bell-eq"
           className="text-4xl"
         >{tex`\\begin{aligned}
-          \\text{lfp}\\:\\Phi_r &= \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\dots)))) \\\\
-              &= \\displaystyle \\sup_n \\Phi_r^n(\\bot) \\\\
-              &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s')
+          \\text{lfp}\\:\\Phi_r &= \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot)))) \\\\
+              &= \\displaystyle \\sup_n \\Phi_r^{n+1}(\\bot) \\\\
+              &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s')
           \\end{aligned}`}</motion.div>
       ),
     },
+  // (delta: number) =>
+  //   delta == 0 && {
+  //     appear: false,
+  //     render: (
+  //       <motion.div
+  //         layout="position"
+  //         layoutId="bell-eq"
+  //         className="text-4xl"
+  //       >{tex`\\begin{aligned}
+  //         \\text{lfp}\\:\\Phi_r &= \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot)))) \\\\
+  //             &= \\displaystyle \\sup_n \\Phi_r^{n+1}(\\bot) \\\\
+  //             &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
+  //             &= \\lambda s.\\: \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //         \\end{aligned}`}</motion.div>
+  //     ),
+  //   },
+  // (delta: number) =>
+  //   delta == 0 && {
+  //     appear: false,
+  //     render: (
+  //       <motion.div
+  //         layout="position"
+  //         layoutId="bell-eq"
+  //         className="text-4xl"
+  //       >{tex`\\begin{aligned}
+  //               \\text{lfp}\\:\\Phi_r &= \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot)))) \\\\
+  //                   &= \\displaystyle \\sup_n \\Phi_r^{n+1}(\\bot) \\\\
+  //                   &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
+  //                   &= \\lambda s.\\: \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                   &= \\lambda s.\\: \\displaystyle \\sup_n \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //               \\end{aligned}`}</motion.div>
+  //     ),
+  //   },
   (delta: number) =>
     delta == 0 && {
       appear: false,
@@ -101,43 +135,10 @@ const steps = [
           layoutId="bell-eq"
           className="text-4xl"
         >{tex`\\begin{aligned}
-          \\text{lfp}\\:\\Phi_r &= \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\dots)))) \\\\
-              &= \\displaystyle \\sup_n \\Phi_r^n(\\bot) \\\\
-              &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
-              &= \\lambda s.\\: \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-          \\end{aligned}`}</motion.div>
-      ),
-    },
-  (delta: number) =>
-    delta == 0 && {
-      appear: false,
-      render: (
-        <motion.div
-          layout="position"
-          layoutId="bell-eq"
-          className="text-4xl"
-        >{tex`\\begin{aligned}
-                \\text{lfp}\\:\\Phi_r &= \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\dots)))) \\\\
-                    &= \\displaystyle \\sup_n \\Phi_r^n(\\bot) \\\\
-                    &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
-                    &= \\lambda s.\\: \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sum_{\\pi \\:\\in\\: \\Paths(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                    &= \\lambda s.\\: \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                \\end{aligned}`}</motion.div>
-      ),
-    },
-  (delta: number) =>
-    delta == 0 && {
-      appear: false,
-      render: (
-        <motion.div
-          layout="position"
-          layoutId="bell-eq"
-          className="text-4xl"
-        >{tex`\\begin{aligned}
-                  \\text{lfp}\\:\\Phi_r &= \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\dots)))) \\\\
-                      &= \\displaystyle \\sup_n \\Phi_r^n(\\bot) \\\\
-                      &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
-                      &= \\lambda s.\\: \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+                  \\text{lfp}\\:\\Phi_r &= \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot)))) \\\\
+                      &= \\displaystyle \\sup_n \\Phi_r^{n+1}(\\bot) \\\\
+                      &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
+                      &= \\lambda s.\\: \\displaystyle \\sup_n \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
                   \\end{aligned}`}</motion.div>
       ),
     },
@@ -150,103 +151,143 @@ const steps = [
           layoutId="bell-eq"
           className="text-4xl"
         >{tex`\\begin{aligned}
-                  \\text{lfp}\\:\\Phi_r &= \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\dots)))) \\\\
-                      &= \\displaystyle \\sup_n \\Phi_r^n(\\bot) \\\\
-                      &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
-                      &= \\lambda s.\\: \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                      &= \\lambda s.\\: \\MinER(r, s)
-                  \\end{aligned}`}</motion.div>
-      ),
-    },
-  (delta: number) =>
-    delta == 0 && {
-      appear: false,
-      render: (
-        <motion.div
-          layout="position"
-          layoutId="bell-eq"
-          className="text-4xl"
-        >{tex`\\begin{aligned}
-                      \\text{lfp}\\:\\Psi_r &= \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\dots)))) \\\\
-                          &= \\displaystyle \\sup_n \\Psi_r^n(\\bot) \\\\
-                          &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
-                          &= \\lambda s.\\: \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                          &= \\lambda s.\\: \\MaxER(r, s)
-                      \\end{aligned}`}</motion.div>
-      ),
-    },
-  (delta: number) =>
-    delta == 0 && {
-      appear: false,
-      render: (
-        <motion.div
-          layout="position"
-          layoutId="bell-eq"
-          className="text-4xl"
-        >{tex`\\begin{aligned}
-                          \\text{lfp}\\:\\Psi_r &= \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\dots)))) \\\\
-                              &= \\displaystyle \\sup_n \\Psi_r^n(\\bot) \\\\
-                              &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
-                              &= \\lambda s.\\: \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                              &= \\lambda s.\\: \\displaystyle \\displaystyle \\sup_n \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                              &= \\lambda s.\\: \\MaxER(r, s)
-                          \\end{aligned}`}</motion.div>
-      ),
-    },
-  (delta: number) =>
-    delta == 0 && {
-      appear: false,
-      render: (
-        <motion.div
-          layout="position"
-          layoutId="bell-eq"
-          className="text-4xl"
-        >{tex`\\begin{aligned}
-                              \\text{lfp}\\:\\Psi_r &= \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\dots)))) \\\\
-                                  &= \\displaystyle \\sup_n \\Psi_r^n(\\bot) \\\\
-                                  &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
-                                  &= \\lambda s.\\: \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                                  &= \\lambda s.\\: \\displaystyle \\displaystyle \\sup_n \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                                  &= \\sup_n \\lambda s.\\: \\displaystyle \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                                  &= \\lambda s.\\: \\MaxER(r, s)
-                              \\end{aligned}`}</motion.div>
-      ),
-    },
-  (delta: number) =>
-    delta == 0 && {
-      appear: false,
-      render: (
-        <motion.div
-          layout="position"
-          layoutId="bell-eq"
-          className="text-4xl"
-        >{tex`\\begin{aligned}
-                                  \\text{lfp}\\:\\Psi_r &= \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\dots)))) \\\\
-                                      &= \\displaystyle \\sup_n \\Psi_r^n(\\bot) \\\\
-                                      &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
-                                      &= \\sup_n \\lambda s.\\: \\displaystyle \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                                      &= \\lambda s.\\: \\MaxER(r, s)
-                                  \\end{aligned}`}</motion.div>
+                    \\text{lfp}\\:\\Phi_r &= \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot)))) \\\\
+                        &= \\displaystyle \\sup_n \\Phi_r^{n+1}(\\bot) \\\\
+                        &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
+                        &= \\lambda s.\\: \\displaystyle \\sup_n \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+                        &= \\lambda s.\\: \\MinER(r, s)
+                    \\end{aligned}`}</motion.div>
       ),
     },
   (delta: number) =>
     delta < 2 && {
       appear: false,
       render: (
-        <motion.div
-          layout="position"
-          layoutId="bell-eq"
-          className="text-4xl"
-        >{tex`\\begin{aligned}
-                                    \\text{lfp}\\:\\Psi_r &= \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\dots)))) \\\\
-                                        &= \\displaystyle \\sup_n \\Psi_r^n(\\bot) \\\\
-                                        &= \\displaystyle \\sup_n \\lambda s.\\: \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} r(s) + \\sum_{s' \\:\\in\\: \\succs(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
-                                        &= \\sup_n \\lambda s.\\: \\displaystyle \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths_{\\le n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
-                                        &= \\lambda s.\\: \\MaxER(r, s)
-                                    \\end{aligned}`}</motion.div>
+        <motion.div layout="position">
+          <Callout title="Theorem">
+            <div className="flex flex-col items-center text-5xl gap-4 p-10">
+              <motion.div
+                layout="position"
+                layoutId="bell-eq"
+                className="text-4xl"
+              >{tex`\\begin{aligned}
+                      \\text{lfp}\\:\\Phi_r &= \\dots \\Phi_r(\\Phi_r(\\Phi_r(\\Phi_r(\\bot)))) \\\\
+                          &= \\displaystyle \\sup_n \\Phi_r^{n+1}(\\bot) \\\\
+                          &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\inf_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Phi_r^n(\\bot)(s') \\\\
+                          &= \\lambda s.\\: \\displaystyle \\sup_n \\displaystyle \\inf_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+                          &= \\lambda s.\\: \\MinER(r, s)
+                      \\end{aligned}`}</motion.div>
+            </div>
+            {delta == 1 && (
+              <motion.div
+                layout
+                initial={{
+                  scale: 0,
+                  position: "absolute",
+                  top: "-0em",
+                  right: "-5em",
+                  rotate: -20,
+                }}
+                animate={{ scale: 1.2, position: "absolute", rotate: 20 }}
+                className="bg-fg-50/50 rounded-xl border"
+              >
+                <LeanLogo className="w-96" />
+              </motion.div>
+            )}
+          </Callout>
+        </motion.div>
       ),
     },
   null,
+  // (delta: number) =>
+  //   delta == 0 && {
+  //     appear: false,
+  //     render: (
+  //       <motion.div
+  //         layout="position"
+  //         layoutId="bell-eq"
+  //         className="text-4xl"
+  //       >{tex`\\begin{aligned}
+  //                     \\text{lfp}\\:\\Psi_r &= \\dots \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\bot)))) \\\\
+  //                         &= \\displaystyle \\sup_n \\Psi_r^{n+1}(\\bot) \\\\
+  //                         &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
+  //                         &= \\lambda s.\\: \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                         &= \\lambda s.\\: \\MaxER(r, s)
+  //                     \\end{aligned}`}</motion.div>
+  //     ),
+  //   },
+  // (delta: number) =>
+  //   delta == 0 && {
+  //     appear: false,
+  //     render: (
+  //       <motion.div
+  //         layout="position"
+  //         layoutId="bell-eq"
+  //         className="text-4xl"
+  //       >{tex`\\begin{aligned}
+  //                         \\text{lfp}\\:\\Psi_r &= \\dots \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\bot)))) \\\\
+  //                             &= \\displaystyle \\sup_n \\Psi_r^{n+1}(\\bot) \\\\
+  //                             &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
+  //                             &= \\lambda s.\\: \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                             &= \\lambda s.\\: \\displaystyle \\displaystyle \\sup_n \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                             &= \\lambda s.\\: \\MaxER(r, s)
+  //                         \\end{aligned}`}</motion.div>
+  //     ),
+  //   },
+  // (delta: number) =>
+  //   delta == 0 && {
+  //     appear: false,
+  //     render: (
+  //       <motion.div
+  //         layout="position"
+  //         layoutId="bell-eq"
+  //         className="text-4xl"
+  //       >{tex`\\begin{aligned}
+  //                             \\text{lfp}\\:\\Psi_r &= \\dots \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\bot)))) \\\\
+  //                                 &= \\displaystyle \\sup_n \\Psi_r^{n+1}(\\bot) \\\\
+  //                                 &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
+  //                                 &= \\lambda s.\\: \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\displaystyle \\sup_n \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                                 &= \\lambda s.\\: \\displaystyle \\displaystyle \\sup_n \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                                 &= \\sup_n \\lambda s.\\: \\displaystyle \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                                 &= \\lambda s.\\: \\MaxER(r, s)
+  //                             \\end{aligned}`}</motion.div>
+  //     ),
+  //   },
+  // (delta: number) =>
+  //   delta == 0 && {
+  //     appear: false,
+  //     render: (
+  //       <motion.div
+  //         layout="position"
+  //         layoutId="bell-eq"
+  //         className="text-4xl"
+  //       >{tex`\\begin{aligned}
+  //                                 \\text{lfp}\\:\\Psi_r &= \\dots \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\bot)))) \\\\
+  //                                     &= \\displaystyle \\sup_n \\Psi_r^{n+1}(\\bot) \\\\
+  //                                     &= \\displaystyle \\sup_n \\lambda s.\\: r(s) + \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
+  //                                     &= \\sup_n \\lambda s.\\: \\displaystyle \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                                     &= \\lambda s.\\: \\MaxER(r, s)
+  //                                 \\end{aligned}`}</motion.div>
+  //     ),
+  //   },
+  // (delta: number) =>
+  //   delta < 2 && {
+  //     appear: false,
+  //     render: (
+  //       <motion.div
+  //         layout="position"
+  //         layoutId="bell-eq"
+  //         className="text-4xl"
+  //       >{tex`\\begin{aligned}
+  //                                   \\text{lfp}\\:\\Psi_r &= \\dots \\Psi_r(\\Psi_r(\\Psi_r(\\Psi_r(\\bot)))) \\\\
+  //                                       &= \\displaystyle \\sup_n \\Psi_r^{n+1}(\\bot) \\\\
+  //                                       &= \\displaystyle \\sup_n \\lambda s.\\: \\displaystyle \\sup_{\\alpha \\:\\in\\: \\Act} r(s) + \\sum_{s' \\:\\in\\: \\succs_\\alpha(s)} \\P(s, \\alpha)(s') \\cdot \\Psi_r^n(\\bot)(s') \\\\
+  //                                       &= \\sup_n \\lambda s.\\: \\displaystyle \\displaystyle \\sup_{\\Sche \\:\\in\\: \\Scheduler} \\sum_{\\pi \\:\\in\\: \\Paths^{=n}(s)} \\Prob(\\Sche, \\pi) \\cdot \\rew{}(r, \\pi) \\\\
+  //                                       &= \\lambda s.\\: \\MaxER(r, s)
+  //                                   \\end{aligned}`}</motion.div>
+  //     ),
+  //   },
+  // null,
 ];
 
 export const s07 = makeSlide(steps.length + 1, () => {

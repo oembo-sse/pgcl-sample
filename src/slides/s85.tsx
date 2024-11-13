@@ -10,7 +10,7 @@ import { LeanLogo } from "../assets/lean_logo";
 
 const steps = [
   <div className="text-5xl text-center flex flex-col items-center">
-    Formalize in the Lean theorem prover
+    Finish formalize in the Lean theorem prover
     <LeanLogo className="w-50" />
   </div>,
   <div className="text-5xl text-center flex flex-col items-center">
